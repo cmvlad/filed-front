@@ -10,6 +10,6 @@ export class PaymentService {
   }
 
   setPayment(payment: PaymentModel): Observable<number> {
-    return this.http.post<number>('url', payment);
+    return this.http.post<number>('http://localhost:3000/api/payment', payment);
   }
 }

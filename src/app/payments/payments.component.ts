@@ -36,20 +36,20 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     });
   }
 
-  submitForm() {
+  submitForm(): void {
     if (this.paymentForm.valid) {
-      this.messageBarService.sendToast(
-        this.messageBarService.createModel('Payment successful', ModelTypeEnum.success)
-      );
-      // this.paymentService.setPayment(this.createPaymentModel()).subscribe(resp => {
-      //
-      // }, err => {
-      //
-      // });
+      this.paymentService.setPayment(this.createPaymentModel()).subscribe(resp => {
+        console.log('API POST Respone', resp);
+        this.messageBarService.sendToast(
+          this.messageBarService.createModel('Payment successful', ModelTypeEnum.success)
+        );
+        this.resetForm();
+      }, err => {
+        this.messageBarService.sendToast(
+          this.messageBarService.createModel('Payment unsuccessful. Please Try again', ModelTypeEnum.error)
+        );
+      });
     } else {
-      this.messageBarService.sendToast(
-        this.messageBarService.createModel('Payment unsuccessful. Please Try again', ModelTypeEnum.error)
-      );
       this.paymentForm.markAllAsTouched();
     }
   }
@@ -62,6 +62,10 @@ export class PaymentsComponent implements OnInit, OnDestroy {
       this.paymentForm.value.securityCode,
       this.paymentForm.value.amount
     );
+  }
+
+  resetForm(): void {
+    this.paymentForm.reset();
   }
 
   ngOnDestroy(): void {
